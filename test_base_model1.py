@@ -5,7 +5,10 @@ import uuid
 my_model = BaseModel()
 my_model.name = "My First Model"
 my_model.my_number = 89
+print(type(my_model))
+print("----")
 print(my_model)
+print("----")
 print(my_model.my_number)
 print(uuid.uuid4())
 my_model.save()

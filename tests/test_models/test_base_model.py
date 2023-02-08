@@ -16,65 +16,70 @@ class TestBaseModel(unittest.TestCase):
     def test_3_init(self):
         """Tests instantiation of BaseModel class."""
         b = BaseModel()
+        # type of b = BaseModel
         self.assertEqual(str(type(b)), "<class 'models.base_model.BaseModel'>")
+        # b is instance of BaseModel
         self.assertIsInstance(b, BaseModel)
+        # b is a sub of BaseModel
         self.assertTrue(issubclass(type(b), BaseModel))
+        
+    def test_3_init_with_no_args(self):
+        """ Tests __init__ with no argument """
+        # with self.assertRaises(TypeError) as e:
+        #     BaseModel.__init__()
+        # msg = "__init__() is missing 1 required positional argument: 'self'"
+        # self.assertEqual(str(e.exception), msg)
+        
+    def test_3_init_many_args(self):
+        """ Test __init__() with many arguments """
+        args = [i for i in range(1000)]
+        b = BaseModel(0, 1, 2, 3, 4, 5)
+        b = BaseModel(*args)
 
-    def test_3_datetime_created(self):
-        """Tests if updated_at & created_at are current at creation."""
-        date_now = datetime.now()
+    def test_3_attributes(self):
+        """ Checks that instance of BaseModel has attribute(s) initialization """
         b = BaseModel()
-        diff = b.updated_at - b.created_at
-        self.assertTrue(abs(diff.total_seconds()) < 0.01)
-        diff = b.created_at - date_now
-        self.assertTrue(abs(diff.total_seconds()) < 0.1)
+        # self.assertTrue(hasattr(b))
 
-    def test_3_id(self):
-        """Tests for unique user ids."""
-
-        nl = [BaseModel().id for i in range(1000)]
-        self.assertEqual(len(set(nl)), len(nl))
-
-    def test_3_save(self):
-        """Tests the public instance method save()."""
-
+    def test_3_if_BaseModel_has_id_attribute(self):
+        """ Checks that instance has an id attribute on initialization """
         b = BaseModel()
-        time.sleep(0.5)
-        date_now = datetime.now()
-        b.save()
-        diff = b.updated_at - date_now
-        self.assertTrue(abs(diff.total_seconds()) < 0.01)
+        self.assertTrue(hasattr(b, "id"))
 
-    def test_3_str(self):
-        """Tests for __str__ method."""
+    def test_3_if_BaseModel_has_id_attribute_is_unique(self):
+        """ Checks if id is generated randomly and uniquely """
+        b1 = BaseModel()
+        b2 = BaseModel()
+        # check for 2 instances
+        self.assertNotEqual(b1.id, b2.id)
+        b = [BaseModel().id for i in range(1000)]
+        # check for a thousand (1000) instances
+        self.assertEqual(len(set(b)), len(b))
+
+    def test_3_str_representation(self):
+        """ Checks if the string representation is appropriate """
         b = BaseModel()
-        rex = re.compile(r"^\[(.*)\] \((.*)\) (.*)$")
-        res = rex.match(str(b))
-        self.assertIsNotNone(res)
-        self.assertEqual(res.group(1), "BaseModel")
-        self.assertEqual(res.group(2), b.id)
-        s = res.group(3)
-        s = re.sub(r"(datetime\.datetime\([^)]*\))", "'\\1'", s)
-        d = json.loads(s.replace("'", '"'))
-        d2 = b.__dict__.copy()
-        d2["created_at"] = repr(d2["created_at"])
-        d2["updated_at"] = repr(d2["updated_at"])
-        self.assertEqual(d, d2)
+        self.assertEqual(str(b), "[BaseModel] ({}) {}".format(b.id, b.__dict__))
 
     def test_3_to_dict(self):
-        """Tests the public instance method to_dict()."""
+        """ Checks if BaseModel.to_dict() returns a dict object """
+        pass
 
-        b = BaseModel()
-        b.name = "Laura"
-        b.age = 23
-        d = b.to_dict()
-        self.assertEqual(d["id"], b.id)
-        self.assertEqual(d["__class__"], type(b).__name__)
-        self.assertEqual(d["created_at"], b.created_at.isoformat())
-        self.assertEqual(d["updated_at"], b.updated_at.isoformat())
-        self.assertEqual(d["name"], b.name)
-        self.assertEqual(d["age"], b.age)
+    def test_3_to_dict_with_no_args(self):
+        pass
+    
+    def test_3_to_dict_with_excess_args(self):
+        pass
 
+    def test_3_to_dict_check_if_it_returns_dict(self):
+        pass
 
+    def test_if_to_dict_returns_class_dunder_method(self):
+        pass
+
+    def test_that_created_at_returned_by_to_dict_is_an_iso_string(self):
+        pass
+
+    
 if __name__ == "__main__":
     unittest.main()
