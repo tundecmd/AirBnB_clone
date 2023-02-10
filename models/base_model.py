@@ -9,8 +9,7 @@ class BaseModel:
         # print("init function")
         if not kwargs:
             self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = self.updated_at = datetime.now()
         else:
             for key, value in kwargs.items():
                 if key != "__class__":
