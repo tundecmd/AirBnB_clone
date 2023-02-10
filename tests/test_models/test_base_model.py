@@ -65,7 +65,7 @@ class TestBaseModel(unittest.TestCase):
         """ """
         base_model = BaseModel()
         base_model.save()
-        self.assertEqual(
+        self.assertNotEqual(
                 base_model.created_at.microsecond,
                 base_model.updated_at.microsecond
                 )
