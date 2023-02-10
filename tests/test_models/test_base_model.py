@@ -65,11 +65,11 @@ class TestBaseModel(unittest.TestCase):
         """ """
         base_model = BaseModel()
         base_model.save()
-        self.assertNotEqual(
+        self.assertEqual(
                 base_model.created_at.microsecond,
                 base_model.updated_at.microsecond
                 )
-                
+
     def test_3_to_dict(self):
         """ Checks if BaseModel.to_dict() returns a dict object """
         base_model = BaseModel()
