@@ -61,6 +61,15 @@ class TestBaseModel(unittest.TestCase):
         b = BaseModel()
         self.assertEqual(str(b), "[BaseModel] ({}) {}".format(b.id, b.__dict__))
 
+    def test_3_save(self):
+        """ """
+        base_model = BaseModel()
+        base_model.save()
+        self.assertNotEqual(
+                base_model.created_at.microsecond,
+                base_model.updated_at.microsecond
+                )
+                
     def test_3_to_dict(self):
         """ Checks if BaseModel.to_dict() returns a dict object """
         base_model = BaseModel()
