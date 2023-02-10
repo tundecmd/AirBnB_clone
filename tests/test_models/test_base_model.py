@@ -63,7 +63,17 @@ class TestBaseModel(unittest.TestCase):
 
     def test_3_to_dict(self):
         """ Checks if BaseModel.to_dict() returns a dict object """
-        pass
+        base_model = BaseModel()
+        my_model = base_model.to_dict()
+        self.assertEqual(my_model["id"], base_model.id)
+        self.assertEqual(
+                my_model["created_at"],
+                base_model.created_at.isoformat()
+                )
+        self.assertEqual(
+                my_model["updated_at"],
+                base_model.updated_at.isoformat()
+                )
 
     def test_3_to_dict_with_no_args(self):
         pass
