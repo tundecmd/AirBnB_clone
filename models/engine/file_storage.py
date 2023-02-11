@@ -19,7 +19,7 @@ class FileStorage:
     def new(self, obj):
         """ """
         # print("newww")
-        self.__objects[obj.__class__.__name__] = obj
+        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """ """
