@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from uuid import uuid4
 from datetime import datetime
+from models import storage
 
 class BaseModel:
     """ A BaseModel class that defines all common attributes/methods for other classes """
@@ -10,16 +11,15 @@ class BaseModel:
         if not kwargs:
             self.id = str(uuid4())
             self.created_at = self.updated_at = datetime.now()
+            storage.new(self)
         else:
             for key, value in kwargs.items():
                 if key != "__class__":
                     if key in ("created_at", "updated_at"):
                         setattr(self, key, datetime.fromisoformat(value))
                     else:
-                        setattr(self, key, value)
-            
+                        setattr(self, key, value)        
 
-    
     def __str__(self):
         """ A string representation that is readablinfe to humans """
         return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
@@ -27,10 +27,10 @@ class BaseModel:
     def save(self):
         """ updates the public instance attribute updated_at with the current datetime"""
         self.updated_at = datetime.now()
-        print("save")
+        storage.save()
 
     def to_dict(self):
-        """  Returns a dictionary containing all keys/values of __dict__ of the instance """
+        """ Returns a dictionary containing all keys/values of __dict__ of the instance """
         my_dict = self.__dict__.copy()
         my_dict["__class__"] = self.__class__.__name__
 
